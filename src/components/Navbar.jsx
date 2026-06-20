@@ -4,7 +4,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Handle scroll to make navbar more solid
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -23,10 +22,10 @@ const Navbar = () => {
     <nav 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
         isOpen 
-          ? 'bg-[#ff2a2a] py-4'
+          ? 'bg-[#1A1A2E]/98 py-3' 
           : isScrolled 
-            ? 'bg-transparent py-4' 
-            : 'bg-transparent py-6'
+            ? 'bg-[#0F0F1A]/80 backdrop-blur-lg py-3' 
+            : 'bg-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
@@ -34,7 +33,7 @@ const Navbar = () => {
         {/* Left Side: Logo/Name */}
         <div className="flex items-center">
           <a href="#" className="text-white text-2xl font-black tracking-tight">
-            Pratham<span className="text-red-500">.</span>
+            Pratham<span className="gradient-text">.</span>
           </a>
         </div>
 
@@ -44,11 +43,10 @@ const Navbar = () => {
             <a 
               key={link} 
               href={`#${link.toLowerCase()}`}
-              className="text-white/80 hover:text-white font-medium relative group transition-colors duration-300"
+              className="text-white/70 hover:text-white font-medium relative group transition-colors duration-300 text-sm tracking-wide"
             >
               {link}
-              {/* Smooth hover underline */}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#6C63FF] to-[#4ECDC4] transition-all duration-300 group-hover:w-full"></span>
             </a>
           ))}
         </div>
@@ -57,7 +55,7 @@ const Navbar = () => {
         <div className="hidden md:block">
           <a 
             href="#contact" 
-            className="px-6 py-2.5 rounded-full bg-white/10 border border-white/20 text-white font-semibold hover:bg-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-all duration-300 backdrop-blur-md"
+            className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#6C63FF] to-[#5A52D5] text-white font-semibold hover:shadow-[0_0_20px_rgba(108,99,255,0.4)] transition-all duration-300"
           >
             Hire Me
           </a>
@@ -67,44 +65,55 @@ const Navbar = () => {
         <div className="md:hidden flex items-center">
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="text-white focus:outline-none p-2"
+            className="text-white focus:outline-none p-2 group"
+            aria-label="Toggle menu"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            <div className="w-6 h-6 relative flex items-center justify-center">
+              <span className={`block absolute h-0.5 w-6 bg-gradient-to-r from-[#6C63FF] to-[#4ECDC4] transform transition-all duration-300 ${isOpen ? 'rotate-45' : '-translate-y-1.5'}`}></span>
+              <span className={`block absolute h-0.5 w-6 bg-gradient-to-r from-[#6C63FF] to-[#4ECDC4] transform transition-all duration-300 ${isOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+              <span className={`block absolute h-0.5 w-6 bg-gradient-to-r from-[#6C63FF] to-[#4ECDC4] transform transition-all duration-300 ${isOpen ? '-rotate-45' : 'translate-y-1.5'}`}></span>
+            </div>
           </button>
         </div>
       </div>
 
       {/* Mobile Slide-Down Menu */}
       <div 
-        className={`md:hidden absolute top-full left-0 w-full transition-all duration-300 overflow-hidden ${
-          isOpen ? 'max-h-96 py-4 opacity-100 bg-[#ff2a2a] shadow-2xl' : 'max-h-0 opacity-0 bg-transparent'
+        className={`md:hidden absolute top-full left-0 w-full transition-all duration-400 ease-in-out overflow-hidden ${
+          isOpen 
+            ? 'max-h-[600px] opacity-100 py-4' 
+            : 'max-h-0 opacity-0 py-0'
         }`}
+        style={{
+          background: 'linear-gradient(180deg, #1A1A2E 0%, #0F0F1A 100%)',
+          borderBottom: isOpen ? '1px solid rgba(108,99,255,0.15)' : 'none'
+        }}
       >
-        <div className="flex flex-col px-6 space-y-4">
-          {navLinks.map((link) => (
+        <div className="flex flex-col px-6 space-y-1">
+          {navLinks.map((link, i) => (
             <a 
               key={link} 
               href={`#${link.toLowerCase()}`}
               onClick={() => setIsOpen(false)}
-              className="text-white hover:text-black font-bold text-lg border-b border-white/20 pb-2 transition-colors"
+              className="group flex items-center gap-3 px-4 py-3 rounded-xl text-white/80 hover:text-white font-semibold text-base transition-all duration-300 hover:bg-[#6C63FF]/10 hover:border-[#6C63FF]/20 border border-transparent"
+              style={{ transitionDelay: `${i * 30}ms` }}
             >
+              {/* Link indicator dot */}
+              <span className="w-1.5 h-1.5 rounded-full bg-[#6C63FF]/40 group-hover:bg-[#6C63FF] transition-all duration-300 group-hover:w-2 group-hover:h-2"></span>
               {link}
             </a>
           ))}
-          <div className="pt-4 pb-2">
-             <a 
-               href="#contact" 
-               onClick={() => setIsOpen(false)} 
-               className="inline-block px-6 py-3 rounded-full bg-white text-[#ff2a2a] font-black hover:bg-black hover:text-white transition-colors w-full text-center shadow-lg"
-             >
-               Hire Me
-             </a>
+          <div className="pt-4 pb-3 px-4">
+            <a 
+              href="#contact" 
+              onClick={() => setIsOpen(false)} 
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#6C63FF] to-[#5A52D5] text-white font-bold hover:shadow-[0_0_25px_rgba(108,99,255,0.4)] transition-all duration-300 w-full text-center"
+            >
+              Hire Me
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>

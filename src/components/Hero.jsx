@@ -6,7 +6,7 @@ import introVideo from '../assets/hero video/intro.mp4';
 const Hero = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
@@ -16,6 +16,18 @@ const Hero = () => {
       easing: 'ease-out'
     });
   }, []);
+
+  // Force autoplay on load (handles browser autoplay restrictions)
+  useEffect(() => {
+    if (videoLoaded && videoRef.current) {
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        // Autoplay blocked - user needs to click play
+        setIsPlaying(false);
+      });
+    }
+  }, [videoLoaded]);
 
   const toggleVideo = (e) => {
     e.stopPropagation();
